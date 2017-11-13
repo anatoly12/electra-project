@@ -25,6 +25,39 @@ const store = new Store({
 const storeData = store.parseDataFile('./electra_store.json');
 const monitors = storeData.monitors;
 
+function getSubscriptionName (folderName) {
+  for(let i = 0; i < monitors.length; i++) {
+    console.log(monitors[i].folder + ' . ' + folderName);
+    if( monitors[i].folder == folderName ) {
+      return monitors[i].subscriptionName;
+    }
+  }
+
+  return '';
+}
+
+monitors.forEach( (monitor) => {
+
+  fs.watch(monitor.folder,
+          (eventType, fileName) => {
+            if( fileName ) {
+              const _path = monitor.folder + '\\' + fileName;
+              const subscriptionName = getSubscriptionName(monitor.folder)
+
+              if( subscriptionName ) {
+
+                  mainWindow.webContents.send('onFolderSubscription', {
+                      msg: {
+                        subscription: subscriptionName,
+                        time: 0 //file.mtime_ms
+                      }
+                  });
+              }
+
+            }
+          })
+})
+
 client.capabilityCheck({optional:[], required:[]},
 //client.capabilityCheck({optional:[], required:['relative_root']},
   function (error, resp) {
@@ -37,30 +70,44 @@ client.capabilityCheck({optional:[], required:[]},
     monitors.forEach( (m) => {
       //console.log("\x1b[36m%s\x1b[0m", m.subscriptionName + ' ' + m.folder);
 
-      fs.watch(m.folder, (eventType, fileName) => {
-        console.log(`EventType: ${eventType}. FileName ${fileName}`);
-      });
+      // fs.watch(m.folder, { encoding: 'buffer' } , (eventType, fileName) => {
+      //
+      //     if( fileName ) {
+      //         const _path = m.folder + '\\' + fileName;
+      //         console.log(`EventType: ${eventType}. FileName ${_path}`);
+      //         fs.stat(_path, function(err, stats) {
+      //           if( err ) {
+      //             console.error('\x1b[41mError: %s\x1b[0m', err);
+      //           } else {
+      //             console.log(stats);
+      //           }
+      //         });
+      //     } else {
+      //       console.log(`EventType: ${eventType}. File name is not provided`);
+      //     }
+      //
+      // });
 
-      client.command(['watch-project', m.folder],
-          function (error, resp) {
-            if (error) {
-              console.error('Error initiating watch:', error);
-              return;
-            }
-
-            // It is considered to be best practice to show any 'warning' or
-            // 'error' information to the user, as it may suggest steps
-            // for remediation
-            if ('warning' in resp) {
-              console.log('\x1b[33mwarning: %s\x1b[0m', resp.warning);
-            }
-
-            console.log('\x1b[36mwatch established on: %s Relative_path:%s\x1b[0m',
-                      resp.watch, resp.relative_path);
-
-            make_subscription(client, resp.watch, resp.relative_path, m.subscriptionName)
-
-          });
+      // client.command(['watch-project', m.folder],
+      //     function (error, resp) {
+      //       if (error) {
+      //         console.error('Error initiating watch:', error);
+      //         return;
+      //       }
+      //
+      //       // It is considered to be best practice to show any 'warning' or
+      //       // 'error' information to the user, as it may suggest steps
+      //       // for remediation
+      //       if ('warning' in resp) {
+      //         console.log('\x1b[33mwarning: %s\x1b[0m', resp.warning);
+      //       }
+      //
+      //       console.log('\x1b[36mwatch established on: %s Relative_path:%s\x1b[0m',
+      //                 resp.watch, resp.relative_path);
+      //
+      //       make_subscription(client, resp.watch, resp.relative_path, m.subscriptionName)
+      //
+      //     });
     });
   }
 );
