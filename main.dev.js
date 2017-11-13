@@ -27,7 +27,6 @@ const monitors = storeData.monitors;
 
 function getSubscriptionName (folderName) {
   for(let i = 0; i < monitors.length; i++) {
-    console.log(monitors[i].folder + ' . ' + folderName);
     if( monitors[i].folder == folderName ) {
       return monitors[i].subscriptionName;
     }
@@ -57,118 +56,6 @@ monitors.forEach( (monitor) => {
             }
           })
 })
-
-client.capabilityCheck({optional:[], required:[]},
-//client.capabilityCheck({optional:[], required:['relative_root']},
-  function (error, resp) {
-    if (error) {
-      console.log(error);
-      client.end();
-      return;
-    }
-
-    monitors.forEach( (m) => {
-      //console.log("\x1b[36m%s\x1b[0m", m.subscriptionName + ' ' + m.folder);
-
-      // fs.watch(m.folder, { encoding: 'buffer' } , (eventType, fileName) => {
-      //
-      //     if( fileName ) {
-      //         const _path = m.folder + '\\' + fileName;
-      //         console.log(`EventType: ${eventType}. FileName ${_path}`);
-      //         fs.stat(_path, function(err, stats) {
-      //           if( err ) {
-      //             console.error('\x1b[41mError: %s\x1b[0m', err);
-      //           } else {
-      //             console.log(stats);
-      //           }
-      //         });
-      //     } else {
-      //       console.log(`EventType: ${eventType}. File name is not provided`);
-      //     }
-      //
-      // });
-
-      // client.command(['watch-project', m.folder],
-      //     function (error, resp) {
-      //       if (error) {
-      //         console.error('Error initiating watch:', error);
-      //         return;
-      //       }
-      //
-      //       // It is considered to be best practice to show any 'warning' or
-      //       // 'error' information to the user, as it may suggest steps
-      //       // for remediation
-      //       if ('warning' in resp) {
-      //         console.log('\x1b[33mwarning: %s\x1b[0m', resp.warning);
-      //       }
-      //
-      //       console.log('\x1b[36mwatch established on: %s Relative_path:%s\x1b[0m',
-      //                 resp.watch, resp.relative_path);
-      //
-      //       make_subscription(client, resp.watch, resp.relative_path, m.subscriptionName)
-      //
-      //     });
-    });
-  }
-);
-
- // Subscription results are emitted via the subscription event.
-  // Note that this emits for all subscriptions.  If you have
-  // subscriptions with different `fields` you will need to check
-  // the subscription name and handle the differing data accordingly.
-  // `resp`  looks like this in practice:
-  //
-  // { root: '/private/tmp/foo',
-  //   subscription: 'mysubscription',
-  //   files: [ { name: 'node_modules/fb-watchman/index.js',
-  //       size: 4768,
-  //       exists: true,
-  //       type: 'f' } ] }
- client.on('subscription', function (resp) {
-
-
-    resp.files.forEach(function (file) {
-        // convert Int64 instance to javascript integer
-        const mtime_ms = +file.mtime_ms;
-
-        mainWindow.webContents.send('onFolderSubscription', {
-          msg: {
-            subscription: resp.subscription,
-            time: 0 //file.mtime_ms
-          }
-        });
-
-        console.log('file changed: ' + file.name, mtime_ms);
-    });
- });
-
- // `watch` is obtained from `resp.watch` in the `watch-project` response.
- // `relative_path` is obtained from `resp.relative_path` in the
- // `watch-project` response.
-function make_subscription(client, watch, relative_path, subscriptionName) {
-
-    const sub = {
-      // Match any ()`*.*`) file in the dir_of_interest
-      expression: ["allof", ["match", "*.*"]],
-      // Which fields we're interested in
-      fields: ["name", "size", "mtime_ms", "exists", "type"]
-    };
-    if (relative_path) {
-        sub.relative_root = relative_path;
-    }
-
-    client.command(['subscribe', watch, subscriptionName, sub],
-
-      function (error, resp) {
-        if (error) {
-          // Probably an error in the subscription criteria
-          console.error('\x1b[41mFailed to subscribe: %s\x1b[0m', error);
-          return;
-        }
-
-        console.log('Subscription ' + resp.subscribe + ' established');
-      });
-};
 
 // Prevent window being garbage collected
 let mainWindow;
