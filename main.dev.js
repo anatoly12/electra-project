@@ -4,6 +4,8 @@
 import electron from 'electron';
 import MenuBuilder from './menu.js';
 
+import fs from 'fs';
+
 import watchman from 'fb-watchman';
 var client = new watchman.Client();
 
@@ -34,6 +36,10 @@ client.capabilityCheck({optional:[], required:[]},
 
     monitors.forEach( (m) => {
       //console.log("\x1b[36m%s\x1b[0m", m.subscriptionName + ' ' + m.folder);
+
+      fs.watch(m.folder, (eventType, fileName) => {
+        console.log(`EventType: ${eventType}. FileName ${fileName}`);
+      });
 
       client.command(['watch-project', m.folder],
           function (error, resp) {
