@@ -35,7 +35,10 @@ function getSubscriptionName (folderName) {
   return '';
 }
 
-let checkFileExists = path => new Promise( resolve => fs.access(path, fs.F_OK, err => resolve(!err)) );
+// returns a promise which resoles true if file exists:
+let checkFileExists = path => new Promise( resolve => {
+  fs.access(path, fs.F_OK, err => resolve(!err));
+});
 
 monitors.forEach( (monitor) => {
 
