@@ -7,8 +7,8 @@
     "test": "xo",
     "start": "electron -r babel-register hook.js",
     "debug": "electron --inspect-brk -r babel-register .",
-    "client:build": "webpack -d",
-    "client:start": "webpack-dev-server -d --colors --watch",
+    "client:build": "webpack -d --progress",
+    "client:start": "webpack-dev-server -d --progress --colors --watch --port 8080",
     "build": "electron-packager . --out=dist --asar --overwrite --all",
     "build-main": "cross-env NODE_ENV=production node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.main.prod.js --colors"
   },
