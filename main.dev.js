@@ -39,20 +39,38 @@ monitors.forEach( (monitor) => {
 
   fs.watch(monitor.folder,
           (eventType, fileName) => {
+
             if( fileName ) {
               const _path = monitor.folder + '\\' + fileName;
-              const subscriptionName = getSubscriptionName(monitor.folder)
 
-              if( subscriptionName ) {
+              let checkFileExists = s => new Promise(r=>fs.access(s, fs.F_OK, e => r(!e)));
 
-                  mainWindow.webContents.send('onFolderSubscription', {
-                      msg: {
-                        subscription: subscriptionName,
-                        time: 0 //file.mtime_ms
-                      }
-                  });
-              }
+              checkFileExists(_path)
+              .then(
+                 bool => console.log(`file exists: ${bool}`)
+              );
 
+              // fs.access(_path, fs.constants.F_OK,  (err) => {
+              //   if( err == null ) {
+              //
+              //     const subscriptionName = getSubscriptionName(monitor.folder)
+              //
+              //     if( subscriptionName ) {
+              //
+              //         mainWindow.webContents.send('onFolderSubscription', {
+              //             msg: {
+              //               subscription: subscriptionName,
+              //               time: 0 //file.mtime_ms
+              //             }
+              //         });
+              //     }
+              //
+              //     console.log(`Reported to client => EventType: ${eventType}. FileName: ${fileName}`);
+              //
+              //   } else {
+              //       console.log('Client report skipped due to error: ' + err);
+              //   }
+              // });
             }
           })
 })
