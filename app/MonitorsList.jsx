@@ -1,9 +1,9 @@
 // @flow weak
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { red500, grey500} from 'material-ui/styles/colors';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
@@ -26,10 +26,6 @@ class MonitorsList extends React.Component {
 
   constructor(props) {
     super(props);
-
-    const { classes } = props;
-
-    //console.log(props);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -55,18 +51,22 @@ class MonitorsList extends React.Component {
   }
 
   render() {
+
     return (<div>
               <List>
                 {this.props.monitors.map( (monitor, index) => {
+
+                    let statusColor = ( monitor.notifications == 0 ) ? red500 : grey500;
+
                     return <ListItem primaryText={monitor.name}
                                      leftAvatar={<Avatar icon={<FileFolder />} />}
                                      data-id={monitor.id}
                                      key={index}
                                      onClick={this.onClickProject}>
                                      <Badge badgeContent={monitor.notifications}
-                                            secondary={true}>
+                                            primary={true}>
                                        <IconButton tooltip="Notifications">
-                                         <NotificationsIcon />
+                                         <NotificationsIcon color={statusColor} />
                                        </IconButton>
                                      </Badge>
                            </ListItem>
@@ -76,10 +76,6 @@ class MonitorsList extends React.Component {
   }
 
 };
-
-// ProjectList.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
 
 const mapStateToProps = state => {
 
