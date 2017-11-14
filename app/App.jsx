@@ -3,7 +3,9 @@ import React from 'react';
 import ReactDom from "react-dom";
 
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {GridList, GridTile} from 'material-ui/GridList';
 import Subheader from 'material-ui/Subheader';
@@ -47,11 +49,11 @@ class App extends React.Component {
 
   render() {
     return (
-            <MuiThemeProvider>
+            <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
               <span>
                 <AppBar title='Electra' iconClassNameRight='muidocs-icon-navigation-expand-more' />
                 <GridList>
-                  <Subheader>Monitored Projects</Subheader>
+                  <Subheader style={{color: 'black'}}>Monitored Projects</Subheader>
                   <MonitorsList />
                   <ActiveMonitor />
                 </GridList>
