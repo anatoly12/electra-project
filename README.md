@@ -1,6 +1,6 @@
 # electra
 
-#Scaffold for React App with Electron
+## Scaffold for React App with Electron
 
 Scripts to build for Electron:
 1. npx run client:build
