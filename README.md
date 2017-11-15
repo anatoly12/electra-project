@@ -9,5 +9,5 @@ Scripts to build for Electron:
 
 Scripts to build for Web
 1. npm run client:build:web
-2. npm run client:start
+2. npm run client:start:web
 3. npm run server:start:web
