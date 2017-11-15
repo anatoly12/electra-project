@@ -4,7 +4,18 @@
 import electron from 'electron';
 import MenuBuilder from './menu.js';
 
+import moment from 'moment';
 import fs from 'fs';
+
+import * as admin from 'firebase-admin';
+var serviceAccount = require('./electra-fc7c5-firebase-adminsdk-f9jr0-48c9a62054.json');
+
+var defaultApp = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://electra-fc7c5.firebaseio.com/'
+});
+console.log('Connected to Fibase App ' + defaultApp.name);
+var db = defaultApp.database();
 
 import watchman from 'fb-watchman';
 var client = new watchman.Client();
@@ -35,30 +46,37 @@ function getSubscriptionName (folderName) {
   return '';
 }
 
-// returns a promise which resoles true if file exists:
-let checkFileExists = path => new Promise( resolve => {
-  fs.access(path, fs.F_OK, err => resolve(!err));
-});
+let checkFileExists = path => new Promise( resolve => fs.access(path, fs.F_OK, err => resolve(!err)) );
 
 monitors.forEach( (monitor) => {
 
   fs.watch(monitor.folder,
           (eventType, fileName) => {
 
+            var _day = moment().format("DD-MM-YYYY");
+
+            console.log(`${_day} EventType: ${eventType}. FileName: ${fileName}`);
+
             if( fileName ) {
-              const _path = monitor.folder + '\\' + fileName;
+              const _path = monitor.folder + '/'  + fileName;
 
               checkFileExists(_path)
               .then(
                  isExists => {
                             if( isExists ) {
-                              console.log(`${_path} is reported to client`);
+                              console.log(` ${_path} is reported to client`);
                               const subscriptionName = getSubscriptionName(monitor.folder);
+
+                              db.ref('subs/' + subscriptionName + '/' + _day + '/' + Date.now()).set({
+                                fileName: _path,
+                                eventType: eventType,
+                              });
+
                               if( subscriptionName ) {
                                     mainWindow.webContents.send('onFolderSubscription', {
                                         msg: {
                                           subscription: subscriptionName,
-                                          time: 0 //file.mtime_ms
+                                          time: Date.now()
                                         }
                                     });
                               }
