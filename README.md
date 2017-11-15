@@ -8,4 +8,4 @@ Scripts to build for Electron:
 Scripts to build for Web
 1. npx run client:build:web
 2. npx run client:start
-3. npx run server:start:web
+3. npm run server:start:web
