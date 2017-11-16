@@ -17,10 +17,7 @@ var defaultApp = admin.initializeApp({
 console.log('Connected to Fibase App ' + defaultApp.name);
 var db = defaultApp.database();
 
-import watchman from 'fb-watchman';
-var client = new watchman.Client();
-
-import Store from './store.js';
+import Storage from './storage.js';
 
 const app = electron.app;
 const ipcMain = electron.ipcMain;
@@ -29,11 +26,11 @@ const dialog = electron.dialog;
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
-const store = new Store({
+const storage = new Storage({
   configName: 'electra_store'
 });
 
-const storeData = store.parseDataFile('./electra_store.json');
+const storeData = storage.parseDataFile('./electra_store.json');
 const monitors = storeData.monitors;
 
 function getSubscriptionName (folderName) {
