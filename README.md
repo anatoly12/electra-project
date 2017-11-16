@@ -1,5 +1,8 @@
 # electra
-React Server Side Rendering + React Client Rendering for Firestore documents.
+Directory monitor. Scaffold for isomorphic React for Electron, Node and Web. It demonstrstes a basic communication (thru ipc) between Main and Rendering proccesses of Electron to pass the list of monitored directories and the monitoring events from server to UI. 
+When running as Node app, it uses Server Side Rendering for the list of directories and Firebase Realtime Db to broadcast the monitoring events.
+
+Native Node fs module is used to establish initial directory watches. fb-watchman was also considered for this matter, but it seems failed to watch remote shares on Windows (at least from Windows7). No such failes for MacOS, but primarily this app is intended for enterprises rinning on Windows. 
 
 ## Scaffold for React App with Electron
 
