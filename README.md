@@ -1,4 +1,5 @@
 # electra
+React Server Side Rendering + React Client Rendering for Firestore documents.
 
 ## Scaffold for React App with Electron
 
