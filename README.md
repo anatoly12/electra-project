@@ -7,7 +7,7 @@ Native Node fs module is used to establish initial directory watches. fb-watchma
 ## Scaffold for React App with Electron
 
 Scripts to build for Electron:
-1. npm run client:build
+1. `npm run client:build`
 2. npm run client:start
 3. npm run server:start
 
