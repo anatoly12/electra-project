@@ -50,7 +50,7 @@ class App extends React.Component {
                 <AppBar title='Electra' iconClassNameRight='muidocs-icon-navigation-expand-more' />
                 <GridList>
                   <Subheader>Monitored Projects</Subheader>
-                  <MonitorsList fbRef={this.props.fbRef} />
+                  <MonitorsList />
                   <ActiveMonitor />
                 </GridList>
                 <FloatingActionButton onClick={this.fabClick} style={style}>
