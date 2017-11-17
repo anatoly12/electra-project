@@ -1,4 +1,4 @@
-# electra [![Build Status](https://travis-ci.org/olegkleiman/electra.svg?branch=master)](https://travis-ci.org/olegkleiman/electra) [![GitHub issues](https://img.shields.io/github/travis/olegkleiman/electra.svg?label=MacOS)](https://github.com/olegkleiman/electra/issues)
+# electra [![Build Status](https://travis-ci.org/olegkleiman/electra.svg?branch=master)](https://travis-ci.org/olegkleiman/electra) [![GitHub issues](https://img.shields.io/github/issues/olegkleiman/electra.svg)](https://github.com/olegkleiman/electra/issues)
 
 Directory monitor. Scaffold for isomorphic React for Electron, Node and Web. It demonstrstes a basic communication (thru ipc) between Main and Rendering proccesses of Electron to pass the list of monitored directories and the monitoring events from server to UI. 
 When running as Node app, it uses Server Side Rendering for the list of directories and Firebase Realtime Db to broadcast the monitoring events.
