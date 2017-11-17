@@ -52,7 +52,10 @@ Subs.once('value', (snap) => {
 
           store.dispatch({
             type: 'FS_EVENT',
-            data: _val
+            data: {
+                    fsEvent: _val,
+                    subscription: item.key
+                  }
           });
 
       });
