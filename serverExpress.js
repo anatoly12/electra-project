@@ -47,14 +47,14 @@ db.ref('monitors').once('value', (snap) => {
         (eventType, fileName) => {
 
           if( fileName ) {
-            const _path = monitor.folder + '/'  + fileName;
+            const _path = path.join(monitor.folder,  fileName);
 
             checkFileExists(_path)
             .then(
                isExists => {
                           if( isExists ) {
 
-                            const subscriptionName = getSubscriptionName(monitor.folder);
+                            const subscriptionName = getSubscriptionName(path.normalize(monitor.folder));
                             console.log(` ${_path} (${eventType}) is reported to client with subs ${subscriptionName}`);
 
                             db.ref('actions/' + subscriptionName + '/' + Date.now()).set({
