@@ -22,14 +22,14 @@ var defaultApp = admin.initializeApp({
   databaseURL: 'https://electra-fc7c5.firebaseio.com/'
 });
 console.log('Connected to Fibase App ' + defaultApp.name);
-var db = defaultApp.database().ref();
+var db = defaultApp.database();
 
 const monitors = [];
 
 let checkFileExists = path => new Promise( resolve => fs.access(path, fs.F_OK, err => resolve(!err)) );
 
 // Establis file watcher for each monitor found in Firebase
-db.child('monitors').once('value', (snap) => {
+db.ref('monitors').once('value', (snap) => {
   let _val = snap.val();
   console.log(_val);
   snap.forEach( (s) => {
@@ -87,13 +87,10 @@ function initMonitors(monitors) {
 };
 
 function getSubscriptionName (folderName) {
-  for(let i = 0; i < monitors.length; i++) {
-    if( monitors[i].folder == folderName ) {
-      return monitors[i].subscriptionName;
-    }
-  }
 
-  return '';
+  return monitors.find( (monitor) => {
+    return monitor.folder === folderName;
+  });
 }
 
 const app = express();
