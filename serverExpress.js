@@ -5,6 +5,7 @@ import ReactDomServer   from 'react-dom/server';
 import { createStore }  from 'redux';
 import { Provider }     from 'react-redux';
 
+import _ from 'lodash';
 import moment from 'moment';
 import fs from 'fs';
 
@@ -21,15 +22,62 @@ var defaultApp = admin.initializeApp({
   databaseURL: 'https://electra-fc7c5.firebaseio.com/'
 });
 console.log('Connected to Fibase App ' + defaultApp.name);
-var db = defaultApp.database();
+var db = defaultApp.database().ref();
 
-import Storage from './storage.js';
-const storage = new Storage({
-  configName: 'electra_store'
+const monitors = [];
+
+let checkFileExists = path => new Promise( resolve => fs.access(path, fs.F_OK, err => resolve(!err)) );
+
+// Establis file watcher for each monitor found in Firebase
+db.child('monitors').once('value', (snap) => {
+  let _val = snap.val();
+  console.log(_val);
+  snap.forEach( (s) => {
+    let monitor = s.val();
+
+    console.log('Folder: ' + monitor.folder);
+
+    // Assume 0 as default notifications number
+    monitors.push(_.assign({}, monitor, { notifications: 0}));
+
+    checkFileExists(monitor.folder)
+    .then( isExists => {
+      console.log(monitor.folder + ' is exists ' + isExists);
+
+      fs.watch(monitor.folder,
+        (eventType, fileName) => {
+          var _day = moment().format("DD-MM-YYYY");
+          console.log(`${_day} EventType: ${eventType}. FileName: ${fileName}`);
+
+          if( fileName ) {
+            const _path = monitor.folder + '/'  + fileName;
+
+            checkFileExists(_path)
+            .then(
+               isExists => {
+                          if( isExists ) {
+                            console.log(` ${_path} is reported to client`);
+                            const subscriptionName = getSubscriptionName(monitor.folder);
+
+                            db.ref('actions/' + subscriptionName + '/' + Date.now()).set({
+                              fileName: _path,
+                              eventType: eventType,
+                            });
+
+                          } else {
+                            console.log('Report to client skipped');
+                          }
+                        }
+            );
+        }
+        });
+
+    })
+
+
+  })
+
 });
-
-const storeData = storage.parseDataFile('./electra_store.json');
-const monitors = storeData.monitors;
 
 function initMonitors(monitors) {
   return {
@@ -47,40 +95,6 @@ function getSubscriptionName (folderName) {
 
   return '';
 }
-
-let checkFileExists = path => new Promise( resolve => fs.access(path, fs.F_OK, err => resolve(!err)) );
-
-monitors.forEach( (monitor) => {
-
-    fs.watch(monitor.folder,
-      (eventType, fileName) => {
-        var _day = moment().format("DD-MM-YYYY");
-        console.log(`${_day} EventType: ${eventType}. FileName: ${fileName}`);
-
-        if( fileName ) {
-          const _path = monitor.folder + '/'  + fileName;
-
-          checkFileExists(_path)
-          .then(
-             isExists => {
-                        if( isExists ) {
-                          console.log(` ${_path} is reported to client`);
-                          const subscriptionName = getSubscriptionName(monitor.folder);
-
-                          db.ref('subs/' + subscriptionName + '/' + _day + '/' + Date.now()).set({
-                            fileName: _path,
-                            eventType: eventType,
-                          });
-
-                        } else {
-                          console.log('Report to client skipped');
-                        }
-                      }
-          );
-      }
-      });
-
-});
 
 const app = express();
 
