@@ -6,7 +6,6 @@ import { createStore }  from 'redux';
 import { Provider }     from 'react-redux';
 
 import _ from 'lodash';
-import moment from 'moment';
 import fs from 'fs';
 
 import reducers         from './reducers.jsx';
@@ -46,8 +45,6 @@ db.ref('monitors').once('value', (snap) => {
 
       fs.watch(monitor.folder,
         (eventType, fileName) => {
-          var _day = moment().format("DD-MM-YYYY");
-          console.log(`${_day} EventType: ${eventType}. FileName: ${fileName}`);
 
           if( fileName ) {
             const _path = monitor.folder + '/'  + fileName;
@@ -56,8 +53,9 @@ db.ref('monitors').once('value', (snap) => {
             .then(
                isExists => {
                           if( isExists ) {
-                            console.log(` ${_path} is reported to client`);
+
                             const subscriptionName = getSubscriptionName(monitor.folder);
+                            console.log(` ${_path} (${eventType}) is reported to client with subs ${subscriptionName}`);
 
                             db.ref('actions/' + subscriptionName + '/' + Date.now()).set({
                               fileName: _path,
@@ -88,9 +86,11 @@ function initMonitors(monitors) {
 
 function getSubscriptionName (folderName) {
 
-  return monitors.find( (monitor) => {
+  const subscription = monitors.find( (monitor) => {
     return monitor.folder === folderName;
   });
+
+  return subscription.subscriptionName;
 }
 
 const app = express();
