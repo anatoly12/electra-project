@@ -31,13 +31,20 @@ class MonitorsList extends React.Component {
 
     const { classes } = props;
 
-    //console.log(props);
   }
 
-  componentDidMount() {
-    // this.props.fbRef.on('value', snapshot => {
-    //   console.log(snapshot.val());
-    // })
+  componentWillReceiveProps(nextProps){
+    if( nextProps.fsEvent &&
+        nextProps.fsEventSubscription) {
+
+      const currentMonitor = this.props.monitors.find( (monitor) => {
+        return monitor.subscriptionName === nextProps.fsEventSubscription
+      });
+
+      if( currentMonitor )
+        currentMonitor.notifications++;
+
+    }
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -91,7 +98,11 @@ class MonitorsList extends React.Component {
 
 const mapStateToProps = state => {
 
+  console.log(state.fsEvent);
+
   return {
+    fsEvent: state.fsEvent,
+    fsEventSubscription: state.fsEventSubscription,
     monitors: state.monitors,
     lastSubscription: state.lastSubscription,
     lastSubscriptionTime: state.lastSubscriptionTime
