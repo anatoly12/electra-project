@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import firebase from 'firebase';
+//import firebase from 'firebase';
 
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import { List, ListItem } from 'material-ui/List';
@@ -35,9 +35,9 @@ class MonitorsList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fbRef.on('value', snapshot => {
-      console.log(snapshot.val());
-    })
+    // this.props.fbRef.on('value', snapshot => {
+    //   console.log(snapshot.val());
+    // })
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -92,7 +92,7 @@ class MonitorsList extends React.Component {
 const mapStateToProps = state => {
 
   return {
-    monitors: (state) ? state.monitors : '',
+    monitors: state.monitors,
     lastSubscription: state.lastSubscription,
     lastSubscriptionTime: state.lastSubscriptionTime
   };
