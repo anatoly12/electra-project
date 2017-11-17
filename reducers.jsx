@@ -5,7 +5,8 @@ const INITIAL_STATE = {
   activeMonitorId: 0,
   lastSubscription: '',
   lastSubscriptionTime: 0,
-  fsEvent: {}
+  fsEvent: {},
+  fsEventSubscription: ''
 };
 
 const reducers = (state = INITIAL_STATE, action) => {
@@ -27,7 +28,8 @@ const reducers = (state = INITIAL_STATE, action) => {
     }
 
     case 'FS_EVENT': {
-        return _.assign({}, state, { fsEvent : action.data });
+        return _.assign({}, state, { fsEvent : action.data.fsEvent,
+                                    fsEventSubscription: action.data.subscription });
     }
 
     default:
