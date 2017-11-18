@@ -4,8 +4,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-//import firebase from 'firebase';
-
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
@@ -97,8 +95,6 @@ class MonitorsList extends React.Component {
 // };
 
 const mapStateToProps = state => {
-
-  console.log(state.fsEvent);
 
   return {
     fsEvent: state.fsEvent,
