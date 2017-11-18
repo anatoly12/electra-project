@@ -7,5 +7,5 @@ os:
   - windows
   - osx
 script:
-  - npm run ci-test
+  - npm run test
 sudo: false  
