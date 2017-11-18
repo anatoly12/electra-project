@@ -7,7 +7,6 @@ import reducers from '../reducers.jsx';
 import App from '../app/App.jsx';
 
 test('Test App component', () => {
-
   const store = createStore(reducers);
 
   const component = renderer.create(<Provider store={store}>
