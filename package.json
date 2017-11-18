@@ -19,6 +19,9 @@
   },
   "license": "ISC",
   "main": "hook.js",
+  "jest": {
+    "verbose": true
+  },
   "scripts": {
     "test": "jest --setupTestFrameworkScriptFile=raf/polyfill",
     "ci-test": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls",
