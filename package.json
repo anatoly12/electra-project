@@ -1,10 +1,27 @@
 {
   "name": "electra",
   "version": "1.0.0",
-  "description": "",
+  "description": "Isomorphic React scaffold for Electron, NodeJS and Web",
+  "keywords": [
+    "fs",
+    "electron",
+    "react",
+    "firebase"
+  ],
+  "homepage": "https://github.com/olegkleiman/electra",
+  "author": "Oleg Kleiman",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olegkleiman/electra.git"
+  },
+  "bugs": {
+    "url": "https://github.com/olegkleiman/electra/issues"
+  },
+  "license": "MIT",
   "main": "hook.js",
   "scripts": {
     "test": "xo",
+    "ci-test": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls",
     "server:start:web": "nodemon hookWeb.js",
     "server:debug:web": "node --inspect-brk hookWeb.js",
     "server:start": "electron -r babel-register hook.js",
