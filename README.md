@@ -7,6 +7,8 @@ When running as Node app, it uses Server Side Rendering for the list of director
 
 Native NodeJS *fs* module is used to establish initial directory watches. fb-watchman was also considered for this matter, but it seems failed to watch remote shares on Windows (at least from Windows7). No such failes for MacOS, but primarily this app is intended for enterprises rinning on Windows. 
 
+UI us based on [React ](https://github.com/daviferreira/react-sanfona)
+
 ## Scaffold for React App with Electron
 
 Scripts to build for Electron:
