@@ -21,10 +21,12 @@
   "main": "hook.js",
   "jest": {
     "verbose": true,
-    "collectCoverage": true
+    "collectCoverage": true,
+    "coverageReporters": ["json", "lcov", "text"],
+    "setupTestFrameworkScriptFile": "raf/polyfill"
   },
   "scripts": {
-    "test": "jest --setupTestFrameworkScriptFile=raf/polyfill",
+    "test": "jest",
     "ci-test": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls",
     "server:start:web": "nodemon hookWeb.js",
     "server:debug:web": "node --inspect-brk hookWeb.js",
