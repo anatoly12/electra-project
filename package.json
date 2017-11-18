@@ -22,11 +22,18 @@
   "jest": {
     "verbose": true,
     "collectCoverage": true,
-    "coverageReporters": ["json", "lcov", "text"],
-    "setupTestFrameworkScriptFile": "raf/polyfill"
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text"
+    ],
+    "setupTestFrameworkScriptFile": "raf/polyfill",
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy"
+    }
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest -u",
     "ci-test": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls",
     "server:start:web": "nodemon hookWeb.js",
     "server:debug:web": "node --inspect-brk hookWeb.js",
@@ -66,6 +73,7 @@
     "nodemon": "^1.12.1",
     "raf": "^3.4.0",
     "react": "^16.0.0",
+    "react-accessible-accordion": "^1.0.1",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
@@ -77,6 +85,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-flow": "^6.23.0",
     "cross-env": "^5.1.1",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^21.2.1",
     "react-test-renderer": "^16.1.1",
     "xo": "^0.18.2"
