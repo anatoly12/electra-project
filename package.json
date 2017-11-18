@@ -20,7 +20,8 @@
   "license": "ISC",
   "main": "hook.js",
   "jest": {
-    "verbose": true
+    "verbose": true,
+    "collectCoverage": true
   },
   "scripts": {
     "test": "jest --setupTestFrameworkScriptFile=raf/polyfill",
