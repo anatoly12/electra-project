@@ -22,7 +22,8 @@ Scripts to build for Web
 3. `npm run server:start:web`
 
 ### How it works
-This project uses CSS Modules. For Server Side Rendering, it uses [babel-plugin-css-modules-transform](https://github.com/michalkvasnicak/babel-plugin-css-modules-transform), like (in .babelrc)
+#### CSS Modules
+For Server Side Rendering, it uses [babel-plugin-css-modules-transform](https://github.com/michalkvasnicak/babel-plugin-css-modules-transform), like (in .babelrc)
 ```
     "env": {
       "server": {
