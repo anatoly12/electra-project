@@ -1,7 +1,7 @@
 {
   "name": "electra",
   "version": "1.0.0",
-  "description": "Isomorphic React scaffold for Electron, NodeJS and Web",
+  "description": "Isomorphic React scaffold for ElectronJS, NodeJS and Web",
   "keywords": [
     "fs",
     "electron",
