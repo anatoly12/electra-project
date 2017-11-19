@@ -7,7 +7,7 @@ When running as Node app, it uses Server Side Rendering for the list of director
 
 Native NodeJS *fs* module is used to establish initial directory watches. fb-watchman was also considered for this matter, but it seems failed to watch remote shares on Windows (at least from Windows7). No such failures were observed for MacOS, but primarily this app is intended for enterprise running on Windows. 
 
-UI us based on [React Sanfona](https://github.com/daviferreira/react-sanfona)
+UI is based on [React Sanfona](https://github.com/daviferreira/react-sanfona). 
 
 ## Scaffold for React App with Electron
 
@@ -20,3 +20,34 @@ Scripts to build for Web
 1. `npm run client:build:web`
 2. `npm run client:start:web`
 3. `npm run server:start:web`
+
+### How it works
+This project uses CSS Modules. For Server Side Rendering, it uses [babel-plugin-css-modules-transform](https://github.com/michalkvasnicak/babel-plugin-css-modules-transform), like (in .babelrc)
+```
+    "env": {
+      "server": {
+          "plugins": [
+            [
+              "css-modules-transform", {
+                "extensions": [".css", ".scss"],
+                "devMode": true
+              }
+            ]
+          ]
+      }
+    }
+
+```
+For client-side, it uses webpack *css-loaded* specially configured to support *modules* like:
+```
+{
+      test: /\.css$/,
+       loader: ExtractTextPlugin.extract({
+            loader: 'css-loader',
+            query: {
+              localIdentName: '[name]__[local]___[hash:base64:5]',
+              modules: true
+            }
+          })
+    }
+```
