@@ -1,34 +1,24 @@
-// @flow weak
-
 import React from 'react';
-import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
-import { withStyles, createStyleSheet } from 'material-ui/styles';
-import { List, ListItem } from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
-import FileFolder from 'material-ui/svg-icons/file/folder';
-import Badge from 'material-ui/Badge';
-import IconButton from 'material-ui/IconButton';
-import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
-import Avatar from 'material-ui/Avatar';
-import ContentDrafts from 'material-ui/svg-icons/content/drafts';
+import { Accordion,
+         AccordionItem,
+         AccordionItemBody,
+         AccordionItemTitle } from 'react-sanfona';
 
-const styleSheet = theme => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    background: theme.palette.background.paper,
-  }
-});
+import styles from '../css/eventslist.css';
 
-class MonitorsList extends React.Component {
+// Use named export for unconnected component for jest
+//export
+class EventsList extends React.Component {
 
   constructor(props) {
     super(props);
 
-    const { classes } = props;
-
+    this.state = {
+      fsEvents: []
+    }
   }
 
   componentWillReceiveProps(nextProps){
@@ -42,6 +32,9 @@ class MonitorsList extends React.Component {
       if( currentMonitor )
         currentMonitor.notifications++;
 
+      this.setState( prevState => ({
+        fsEvents: [...this.state.fsEvents, nextProps]
+      }))
     }
   }
 
@@ -58,41 +51,35 @@ class MonitorsList extends React.Component {
     }
   }
 
-  onClickProject = (event: object) => {
-    console.log(event.currentTarget.dataset.id);
-
-    this.props.dispatch({
-      type: 'ACTIVE_MONITOR',
-      data: event.currentTarget.dataset.id
-    });
-  }
-
   render() {
-    return (<div>
-              <List>
-                {this.props.monitors.map( (monitor, index) => {
-                    return <ListItem primaryText={monitor.name}
-                                     leftAvatar={<Avatar icon={<FileFolder />} />}
-                                     data-id={monitor.id}
-                                     key={index}
-                                     onClick={this.onClickProject}>
-                                     <Badge badgeContent={monitor.notifications}
-                                            secondary={true}>
-                                       <IconButton tooltip="Notifications">
-                                         <NotificationsIcon />
-                                       </IconButton>
-                                     </Badge>
-                           </ListItem>
-                })}
-            </List>
-          </div>);
+
+    return (<div className={styles.container}>
+              <h1>Sanfona</h1>
+              {this.state.fsEvents.map( (fsEvent, index) => {
+                  return <div key={index}>
+                            <div>{fsEvent.fileName}</div>
+                            <div>{fsEvent.eventType}</div>
+                          </div>
+              }
+              )}
+
+              <Accordion>
+              <AccordionItem className='accordion_item'
+                             title='25.10.2017'>
+                        <AccordionItemTitle title='One title'>
+                        </AccordionItemTitle>
+                        <AccordionItemBody>
+                          One
+                        </AccordionItemBody>
+              </AccordionItem>
+                <AccordionItem className='accordion_item' title='26.10.2017'>
+                  <h2>Two</h2>
+                </AccordionItem>
+              </Accordion>
+            </div>)
   }
 
 };
-
-// ProjectList.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
 
 const mapStateToProps = state => {
 
@@ -105,5 +92,4 @@ const mapStateToProps = state => {
   };
 };
 
-//var StyledList = withStyles(styleSheet)(MonitorsList);
-export default connect(mapStateToProps)(MonitorsList);
+export default connect(mapStateToProps)(EventsList);
