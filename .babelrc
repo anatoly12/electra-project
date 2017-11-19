@@ -2,5 +2,16 @@
   "presets" : [
       "es2015", "flow", "react", "stage-0"
     ],
-    "plugins": ["add-module-exports"]
+    "env": {
+      "server": {
+          "plugins": [
+            [
+              "css-modules-transform", {
+                "extensions": [".css", ".scss"],
+                "devMode": true
+              }
+            ]
+          ]
+      }
+    }
 }
