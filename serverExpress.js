@@ -95,6 +95,8 @@ function getSubscriptionName (folderName) {
 
 const app = express();
 
+app.use(express.static('css'));
+
 app.get('/', (req, res) => {
 
   const store = createStore(reducers);
