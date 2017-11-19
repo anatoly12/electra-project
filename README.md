@@ -23,7 +23,7 @@ Scripts to build for Web
 
 ### How it works
 #### CSS Modules
-For Server Side Rendering, it uses [babel-plugin-css-modules-transform](https://github.com/michalkvasnicak/babel-plugin-css-modules-transform), like (in .babelrc)
+For Server Side Rendering, this project uses [babel-plugin-css-modules-transform](https://github.com/michalkvasnicak/babel-plugin-css-modules-transform), like (in .babelrc)
 ```
     "env": {
       "server": {
