@@ -49,7 +49,7 @@ db.ref('monitors').once('value', (snap) => {
 ```
 Upon FileSystem event is callbacked, the corresponding monitor is searched:
 ```
-function getSubscriptionName (folderName) {
+let getSubscriptionName = folderName => {
 
   const subscription = monitors.find( (monitor) => {
     return monitor.folder === folderName;
