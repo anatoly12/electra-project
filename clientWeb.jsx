@@ -53,7 +53,11 @@ Subs.once('value', (snap) => {
           store.dispatch({
             type: 'FS_EVENT',
             data: {
-                    fsEvent: _val,
+                    fsEvent: {
+                      eventType: _val.eventType,
+                      fileName: _val.fileName,
+                      watched: s.key
+                    },
                     subscription: item.key
                   }
           });
