@@ -27,13 +27,6 @@ class EventsList extends React.Component {
     if( nextProps.fsEvent &&
         nextProps.fsEventSubscription) {
 
-      const currentMonitor = this.props.monitors.find( (monitor) => {
-        return monitor.subscriptionName === nextProps.fsEventSubscription
-      });
-
-      if( currentMonitor )
-        currentMonitor.notifications++;
-
       this.setState( prevState => ({
         fsEvents: [...this.state.fsEvents, {
                         eventType: nextProps.fsEvent.eventType,
@@ -45,49 +38,22 @@ class EventsList extends React.Component {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if( nextProps.lastSubscription === '' ) {
-      return false;
-    } else {
-        this.props.monitors.forEach( (monitor, index) => {
-          if( monitor.subscriptionName === nextProps.lastSubscription )
-              this.props.monitors[index].notifications++;
-        });
-
-        return true;
-    }
-  }
-
   render() {
-
-
 
     return (<div className={styles.container}>
               <h1>Sanfona</h1>
-              {this.state.fsEvents.map( (fsEvent, index) => {
-
-                  const _watched = moment(parseInt(fsEvent.watched, 10))
-                                  .format('DD.MM.YYYY');
-
-                  return <div key={index}>
-                            <div>{fsEvent.fileName}</div>
-                            <div>{fsEvent.eventType}</div>
-                            <div>{_watched}</div>
-                          </div>
-              }
-              )}
-
+              <h2>{this.props.activeSubscription}</h2>
               <Accordion>
-              <AccordionItem className='accordion_item'
-                             title='25.10.2017'>
-                        <AccordionItemTitle title='One title'>
-                        </AccordionItemTitle>
-                        <AccordionItemBody>
-                          One
-                        </AccordionItemBody>
-              </AccordionItem>
+                <AccordionItem className='accordion_item'
+                               title='25.10.2017'>
+                          <AccordionItemTitle title='One title'>
+                          </AccordionItemTitle>
+                          <AccordionItemBody>
+                            One
+                          </AccordionItemBody>
+                </AccordionItem>
                 <AccordionItem className='accordion_item' title='26.10.2017'>
-                  <h2>Two</h2>
+                    <h2>Two</h2>
                 </AccordionItem>
               </Accordion>
 
@@ -113,10 +79,8 @@ const mapStateToProps = state => {
 
   return {
     fsEvent: state.fsEvent,
+    activeSubscription: state.activeSubscription,
     fsEventSubscription: state.fsEventSubscription,
-    monitors: state.monitors,
-    lastSubscription: state.lastSubscription,
-    lastSubscriptionTime: state.lastSubscriptionTime
   };
 };
 
