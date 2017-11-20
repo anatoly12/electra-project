@@ -2,7 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
-import { Accordion, AccordionItem } from 'react-sanfona';
+import { Accordion,
+         AccordionItem,
+         AccordionItemBody,
+         AccordionItemTitle } from 'react-sanfona';
+
+import moment from 'moment';
 
 import styles from '../css/eventslist.css';
 
@@ -12,6 +17,10 @@ class EventsList extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      fsEvents: []
+    }
   }
 
   componentWillReceiveProps(nextProps){
@@ -25,6 +34,14 @@ class EventsList extends React.Component {
       if( currentMonitor )
         currentMonitor.notifications++;
 
+      this.setState( prevState => ({
+        fsEvents: [...this.state.fsEvents, {
+                        eventType: nextProps.fsEvent.eventType,
+                        fileName: nextProps.fsEvent.fileName,
+                        watched: nextProps.fsEvent.watched
+                      }
+                  ]
+      }))
     }
   }
 
@@ -43,14 +60,34 @@ class EventsList extends React.Component {
 
   render() {
 
+
+
     return (<div className={styles.container}>
               <h1>Sanfona</h1>
+              {this.state.fsEvents.map( (fsEvent, index) => {
+
+                  const _watched = moment(parseInt(fsEvent.watched, 10))
+                                  .format('DD.MM.YYYY');
+
+                  return <div key={index}>
+                            <div>{fsEvent.fileName}</div>
+                            <div>{fsEvent.eventType}</div>
+                            <div>{_watched}</div>
+                          </div>
+              }
+              )}
+
               <Accordion>
-                <AccordionItem className='accordion_item' title='25.10.2017'>
-                  <h2>One</h2>
-                </AccordionItem>
+              <AccordionItem className='accordion_item'
+                             title='25.10.2017'>
+                        <AccordionItemTitle title='One title'>
+                        </AccordionItemTitle>
+                        <AccordionItemBody>
+                          One
+                        </AccordionItemBody>
+              </AccordionItem>
                 <AccordionItem className='accordion_item' title='26.10.2017'>
-                  Two
+                  <h2>Two</h2>
                 </AccordionItem>
               </Accordion>
             </div>)
