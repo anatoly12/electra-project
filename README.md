@@ -26,7 +26,7 @@ Scripts to build for Web
 TBD
 #### Connecting to Firebase
 firebase-admin npm module is used to initiallu connect to Firebase Realtime Db.
-```
+```javascript
 import * as admin from 'firebase-admin';
 ...
 var serviceAccount = require('./electra-fc7c5-firebase-adminsdk-f9jr0-48c9a62054.json');
@@ -38,7 +38,7 @@ var db = defaultApp.database();
 ```
 #### Folder watchers
 Server side established folder watcher (fs.watch()) for each monitor configurtion received from Firebase:
-```
+```javascript
 db.ref('monitors').once('value', (snap) => {
     snap.forEach( (s) => {
           fs.watch(monitor.folder,
@@ -48,7 +48,7 @@ db.ref('monitors').once('value', (snap) => {
 });
 ```
 Upon FileSystem event is callbacked, the corresponding monitor is searched:
-```
+```javascript
 let getSubscriptionName = folderName => {
 
   const subscription = monitors.find( (monitor) => {
@@ -59,7 +59,7 @@ let getSubscriptionName = folderName => {
 }
 ```
 and Firebase Realtime Db is updated in the appropriate tree node:
-```
+```javascript
 db.ref('actions/' + subscriptionName + '/' + Date.now()).set({
   fileName: _path,
   eventType: eventType,
