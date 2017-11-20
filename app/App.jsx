@@ -14,6 +14,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import Header from './Header.jsx';
 import MonitorsList from './MonitorsList.jsx';
 import ActiveMonitor from './ActiveMonitor.jsx';
+import MonitorSelector from './MonitorSelector.jsx';
 import EventsList from './EventsList.jsx';
 
 // import electron from 'electron';
@@ -47,6 +48,7 @@ class App extends React.Component {
 
   render() {
     return (<div>
+              <MonitorSelector />
               <EventsList />
             </div>);
   }
