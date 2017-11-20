@@ -11,9 +11,10 @@ import AppBar from "material-ui/AppBar";
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-//import Header from './Header.jsx';
+import Header from './Header.jsx';
 import MonitorsList from './MonitorsList.jsx';
-import ActiveMonitor from "./ActiveMonitor.jsx";
+import ActiveMonitor from './ActiveMonitor.jsx';
+import EventsList from './EventsList.jsx';
 
 // import electron from 'electron';
 // const ipcRenderer = electron.ipcRenderer;
@@ -45,19 +46,9 @@ class App extends React.Component {
   }
 
   render() {
-    return (<MuiThemeProvider>
-              <span>
-                <AppBar title='Electra' iconClassNameRight='muidocs-icon-navigation-expand-more' />
-                <GridList>
-                  <Subheader>Monitored Projects</Subheader>
-                  <MonitorsList />
-                  <ActiveMonitor />
-                </GridList>
-                <FloatingActionButton onClick={this.fabClick} style={style}>
-                    <ContentAdd />
-                </FloatingActionButton>
-              </span>
-            </MuiThemeProvider>);
+    return (<div>
+              <EventsList />
+            </div>);
   }
 
 };
