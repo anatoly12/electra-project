@@ -24,8 +24,7 @@ class EventsList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if( nextProps.fsEvent &&
-        nextProps.fsEventSubscription) {
+    if( nextProps.fsEvent ) {
 
       this.setState( prevState => ({
         fsEvents: [...this.state.fsEvents, {
