@@ -84,7 +84,7 @@ function initMonitors(monitors) {
   }
 };
 
-function getSubscriptionName (folderName) {
+let getSubscriptionName = folderName => {
 
   const subscription = monitors.find( (monitor) => {
     return monitor.folder === folderName;
