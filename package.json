@@ -9,7 +9,7 @@
     "firebase"
   ],
   "homepage": "https://github.com/olegkleiman/electra",
-  "author": "",
+  "author": "Oleg Kleiman <oleg_kleiman@hotmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/olegkleiman/electra.git"
@@ -44,6 +44,7 @@
     "client:start": "webpack-dev-server -d --progress --colors --watch --port 8080",
     "client:start:web": "webpack-dev-server --config webpack.config.web.js -d --progress --colors --watch --port 8080",
     "build": "electron-packager . --out=dist --asar --overwrite --all",
+    "deploy": "gh-pages -d page/",
     "build-main": "cross-env NODE_ENV=production node --trace-warnings -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.main.prod.js --colors"
   },
   "dependencies": {
@@ -88,6 +89,7 @@
     "cross-env": "^5.1.1",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.1.0",
+    "gh-pages": "^1.1.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^21.2.1",
     "react-test-renderer": "^16.1.1",
