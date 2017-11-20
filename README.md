@@ -22,6 +22,48 @@ Scripts to build for Web
 3. `npm run server:start:web`
 
 ### How it works
+#### Connecting to Firebase
+firebase-admin npm module is used to initiallu connect to Firebase Realtime Db.
+'''
+import * as admin from 'firebase-admin';
+...
+var serviceAccount = require('./electra-fc7c5-firebase-adminsdk-f9jr0-48c9a62054.json');
+var defaultApp = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://electra-fc7c5.firebaseio.com/'
+});
+var db = defaultApp.database();
+'''
+#### Folder watchers
+Server side established folder watcher (fs.watch()) for each monitor configurtion received from Firebase:
+'''
+db.ref('monitors').once('value', (snap) => {
+    snap.forEach( (s) => {
+          fs.watch(monitor.folder,
+            (eventType, fileName) => {
+            });
+    });
+});
+'''
+Upon FileSystem event is callbacked, the corresponding monitor is searched:
+'''
+function getSubscriptionName (folderName) {
+
+  const subscription = monitors.find( (monitor) => {
+    return monitor.folder === folderName;
+  });
+
+  return subscription.subscriptionName;
+}
+'''
+and Firebase Realtime Db is updated in the appropriate tree node:
+'''
+db.ref('actions/' + subscriptionName + '/' + Date.now()).set({
+  fileName: _path,
+  eventType: eventType,
+});
+
+'''
 #### CSS Modules
 For Server Side Rendering, this project uses [babel-plugin-css-modules-transform](https://github.com/michalkvasnicak/babel-plugin-css-modules-transform), like (in .babelrc)
 ```
