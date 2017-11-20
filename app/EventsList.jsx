@@ -90,6 +90,20 @@ class EventsList extends React.Component {
                   <h2>Two</h2>
                 </AccordionItem>
               </Accordion>
+
+              <Accordion>
+                {this.state.fsEvents.map(item => {
+                  return (
+                    <AccordionItem title={`Item ${item.eventType}`} expanded='0'>
+                    <AccordionItemTitle title={item.eventType}>
+                    </AccordionItemTitle>
+                      <div>
+                        {`Item ${item.eventType} content`}
+                      </div>
+                    </AccordionItem>
+                  );
+                })}
+              </Accordion>
             </div>)
   }
 
