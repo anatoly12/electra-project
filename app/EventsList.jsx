@@ -43,10 +43,17 @@ class EventsList extends React.Component {
   render() {
 
     const self = this;
+    const today = moment();
+    let i = 1;
+    while(i < 7) {
+      today.add(-1, 'day'); // add is a mutator method
+      console.log(today.format('DD.MM.YYY'));
+      i++;
+    }
 
     return (<div className={styles.container}>
               <h1>Sanfona</h1>
-              <h2>{this.props.activeSubscription}</h2>
+              <h2>{this.props.activeFolder}</h2>
 
               <Accordion>
                 {this.state.fsEvents.map(fsEvent => {
@@ -56,15 +63,20 @@ class EventsList extends React.Component {
 
                   const _watched = moment(parseInt(fsEvent.watched, 10))
                                   .format('DD.MM.YYYY');
+                  // Extract only file name from full path
+                  const fileName = fsEvent.fileName.split(/(\\|\/)/g).pop();
 
                   return (
                     <AccordionItem title={_watched} expanded='0'>
-                        <AccordionItemTitle title={fsEvent.fileName}>
-                        </AccordionItemTitle>
                         <AccordionItemBody>
-                          <div>
-                            {fsEvent.eventType}
-                          </div>
+                            <div className='row'>
+                                <div className="col-sm">
+                                  File name:{fileName}
+                                </div>
+                                <div className="col-sm">
+                                  Event: {fsEvent.eventType}
+                                </div>
+                              </div>
                           </AccordionItemBody>
                     </AccordionItem>
                   );
@@ -80,7 +92,7 @@ const mapStateToProps = state => {
   return {
     fsEvent: state.fsEvent,
     activeSubscription: state.activeSubscription,
-    fsEventSubscription: state.fsEventSubscription,
+    activeFolder: state.activeFolder
   };
 };
 
