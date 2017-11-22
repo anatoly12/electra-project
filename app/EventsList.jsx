@@ -26,11 +26,14 @@ class EventsList extends React.Component {
   componentWillReceiveProps(nextProps){
     if( nextProps.fsEvent ) {
 
+      const fsEvent = nextProps.fsEvent;
+
       this.setState( prevState => ({
         fsEvents: [...this.state.fsEvents, {
-                        eventType: nextProps.fsEvent.eventType,
-                        fileName: nextProps.fsEvent.fileName,
-                        watched: nextProps.fsEvent.watched
+                        eventType: fsEvent.eventType,
+                        fileName: fsEvent.fileName,
+                        watched: fsEvent.watched,
+                        subscription: fsEvent.subscription
                       }
                   ]
       }))
@@ -39,32 +42,30 @@ class EventsList extends React.Component {
 
   render() {
 
+    const self = this;
+
     return (<div className={styles.container}>
               <h1>Sanfona</h1>
               <h2>{this.props.activeSubscription}</h2>
-              <Accordion>
-                <AccordionItem className='accordion_item'
-                               title='25.10.2017'>
-                          <AccordionItemTitle title='One title'>
-                          </AccordionItemTitle>
-                          <AccordionItemBody>
-                            One
-                          </AccordionItemBody>
-                </AccordionItem>
-                <AccordionItem className='accordion_item' title='26.10.2017'>
-                    <h2>Two</h2>
-                </AccordionItem>
-              </Accordion>
 
               <Accordion>
-                {this.state.fsEvents.map(item => {
+                {this.state.fsEvents.map(fsEvent => {
+
+                  if( fsEvent.subscription != self.props.activeSubscription )
+                    return null;
+
+                  const _watched = moment(parseInt(fsEvent.watched, 10))
+                                  .format('DD.MM.YYYY');
+
                   return (
-                    <AccordionItem title={`Item ${item.eventType}`} expanded='0'>
-                    <AccordionItemTitle title={item.eventType}>
-                    </AccordionItemTitle>
-                      <div>
-                        {`Item ${item.eventType} content`}
-                      </div>
+                    <AccordionItem title={_watched} expanded='0'>
+                        <AccordionItemTitle title={fsEvent.fileName}>
+                        </AccordionItemTitle>
+                        <AccordionItemBody>
+                          <div>
+                            {fsEvent.eventType}
+                          </div>
+                          </AccordionItemBody>
                     </AccordionItem>
                   );
                 })}
