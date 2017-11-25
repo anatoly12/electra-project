@@ -2,11 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
-import { Accordion,
-         AccordionItem,
-         AccordionItemBody,
-         AccordionItemTitle } from 'react-sanfona';
-
 import moment from 'moment';
 
 import styles from '../css/eventslist.css';
@@ -19,7 +14,12 @@ class EventsList extends React.Component {
     super(props);
 
     this.state = {
-      fsEvents: []
+      fsEvents: [],
+      fsEffectiveEvents: []
+    }
+
+    this.badgeStyle = {
+        float: 'right'
     }
   }
 
@@ -40,51 +40,68 @@ class EventsList extends React.Component {
     }
   }
 
+  handleHeaderClick = (day, e) => {
+    e.preventDefault();
+
+    console.log(day.unix());
+  }
+
   render() {
 
     const self = this;
-    const today = moment();
+
+    var dates = [];
+    const today = moment({
+      hour: 0,
+      minute: 0,
+      seconds: 0,
+      milliseconds: 0
+    });
+
     let i = 1;
     while(i < 7) {
-      today.add(-1, 'day'); // add is a mutator method
-      console.log(today.format('DD.MM.YYY'));
+      let day = today.add(-1, 'day');
+      dates.push(day.clone());  // add is a mutator method,
+                                // i.e. day itself object is changed after add()
       i++;
     }
 
-    return (<div className={styles.container}>
-              <h1>Sanfona</h1>
-              <h2>{this.props.activeFolder}</h2>
+    var items = ['one', 'two'];
 
-              <Accordion>
-                {this.state.fsEvents.map(fsEvent => {
+    return(<div>
+             <h1>Sanfona</h1>
+             <h2>{this.props.activeFolder}</h2>
+             <div id='accordion' role='tablist' aria-multiselectable='true'>
+                {dates.map( (day, index)  => {
+                    return (<div className='card' key={index}>
+                              <div className='card-header' role='tab' id={'heading'+index}
+                                  onClick={ (e) => this.handleHeaderClick(day, e)}>
+                                <h5 className='mb-0'>
+                                  <a data-toggle='collapse' data-parent='#accordion'
+                                    href={'#u' + index.toString()} aria-expanded='false'>
+                                      {day.format('DD.MM.YYYY')}
+                                      <span style={this.badgeStyle}
+                                            className="badge badge-primary">New
+                                      </span>
+                                  </a>
+                                </h5>
+                              </div>
 
-                  if( fsEvent.subscription != self.props.activeSubscription )
-                    return null;
-
-                  const _watched = moment(parseInt(fsEvent.watched, 10))
-                                  .format('DD.MM.YYYY');
-                  // Extract only file name from full path
-                  const fileName = fsEvent.fileName.split(/(\\|\/)/g).pop();
-
-                  return (
-                    <AccordionItem title={_watched} expanded='0'>
-                        <AccordionItemBody>
-                            <div className='row'>
-                                <div className="col-sm">
-                                  File name:{fileName}
-                                </div>
-                                <div className="col-sm">
-                                  Event: {fsEvent.eventType}
+                              <div id={'u' + index} className='collapse hide'
+                                    role='tabpanel'
+                                    aria-labelledby={'heading'+index}>
+                                <div className='card-block'>
+                                {items.map( (item, i) => {
+                                  return(<div key={i}>{item}</div>)
+                                  })
+                                }
                                 </div>
                               </div>
-                          </AccordionItemBody>
-                    </AccordionItem>
-                  );
+                            </div>)
                 })}
-              </Accordion>
-            </div>)
+             </div>
+           </div>)
   }
-
 };
 
 const mapStateToProps = state => {
