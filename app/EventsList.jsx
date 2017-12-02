@@ -43,7 +43,19 @@ class EventsList extends React.Component {
   handleHeaderClick = (day, e) => {
     e.preventDefault();
 
-    console.log(day.unix());
+    let fromDate = day.unix();
+    let toDate = day.add(1, 'day');
+
+
+    const effectiveEvents = this.state.fsEvents.filter( (fsEvent) => {
+      const _watched = parseInt(fsEvent.watched / 1000, 10); // without mills
+      console.log('From: ' + fromDate + ' To: ' + fromDate + ' Watched: ' + _watched);
+      return _watched > fromDate && _watched < toDate;
+    });
+
+    this.setState({
+      fsEffectiveEvents: effectiveEvents
+    });
   }
 
   render() {
@@ -59,7 +71,7 @@ class EventsList extends React.Component {
     });
 
     let i = 1;
-    while(i < 7) {
+    while(i < 14) {
       let day = today.add(-1, 'day');
       dates.push(day.clone());  // add is a mutator method,
                                 // i.e. day itself object is changed after add()
@@ -91,8 +103,12 @@ class EventsList extends React.Component {
                                     role='tabpanel'
                                     aria-labelledby={'heading'+index}>
                                 <div className='card-block'>
-                                {items.map( (item, i) => {
-                                  return(<div key={i}>{item}</div>)
+                                {this.state.fsEffectiveEvents.map( (item, i) => {
+                                  const _watched = moment.unix( parseInt(item.watched/1000) );
+                                  return(<div key={i} className='row'>
+                                            <div className='col'>{item.fileName}</div>
+                                            <div className='col'>{_watched.format('DD.MM.YYYY')}</div>
+                                        </div>)
                                   })
                                 }
                                 </div>
