@@ -43,13 +43,14 @@ class EventsList extends React.Component {
   handleHeaderClick = (day, e) => {
     e.preventDefault();
 
-    let fromDate = day.unix();
+    let fromDate = day.clone(); //.unix();
+    //console.log('FROM: ' + fromDate.format('LLLL'));
     let toDate = day.add(1, 'day');
-
+    //console.log('TO: ' + toDate.format('LLLL'));
 
     const effectiveEvents = this.state.fsEvents.filter( (fsEvent) => {
-      const _watched = parseInt(fsEvent.watched / 1000, 10); // without mills
-      console.log('From: ' + fromDate + ' To: ' + fromDate + ' Watched: ' + _watched);
+      const _watched = moment.unix(parseInt(fsEvent.watched / 1000, 10)); // without mills
+      //console.log(' Watched: ' + _watched.format('LLLL'));
       return _watched > fromDate && _watched < toDate;
     });
 
@@ -71,14 +72,12 @@ class EventsList extends React.Component {
     });
 
     let i = 1;
-    while(i < 14) {
+    while(i < 21) {
       let day = today.add(-1, 'day');
       dates.push(day.clone());  // add is a mutator method,
                                 // i.e. day itself object is changed after add()
       i++;
     }
-
-    var items = ['one', 'two'];
 
     return(<div>
              <h1>Sanfona</h1>
