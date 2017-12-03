@@ -56,9 +56,9 @@ Subs.once('value', (snap) => {
                     fsEvent: {
                       eventType: _val.eventType,
                       fileName: _val.fileName,
-                      watched: s.key
-                    },
-                    subscription: item.key
+                      watched: s.key,
+                      subscription: item.key
+                    }
                   }
           });
 
