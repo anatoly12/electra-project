@@ -133,8 +133,10 @@ class EventsList extends React.Component {
     }
 
     return(<div>
-              <h2>Folder monitored:</h2>
-              <h2>{this.props.activeFolder}</h2>
+              <div className='row'>
+                <h2 className='col'>Folder monitored:</h2>
+                <h2 className='col'>{this.props.activeFolder}</h2>
+              </div>
 
               <div id='accordion' role='tablist' aria-multiselectable='true'>
                   {dates.map( (day, index)  => {
