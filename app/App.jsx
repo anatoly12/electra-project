@@ -17,12 +17,16 @@ import ActiveMonitor from './ActiveMonitor.jsx';
 import MonitorSelector from './MonitorSelector.jsx';
 import EventsList from './EventsList.jsx';
 
+import styles from '../css/sanfona.css'
+
+import classNames from 'classnames';
+
 // import electron from 'electron';
 // const ipcRenderer = electron.ipcRenderer;
 
-const style = {
+/*const style = {
   marginRight: 20,
-};
+};*/
 
 class App extends React.Component {
 
@@ -32,8 +36,6 @@ class App extends React.Component {
   }
 
   componentDidCatch(error, info) {
-    // Display fallback UI
-    //this.setState({ hasError: true });
 
     console.error(error);
   }
@@ -47,8 +49,18 @@ class App extends React.Component {
   }
 
   render() {
+
+    let titleStyle = styles.sanfonaTitle;
+    let mainTitleClass = classNames('row', titleStyle);
+
     return (<div>
-              <MonitorSelector />
+              <span className={mainTitleClass}>
+                  <h1 className='col'>Electra Monitor</h1>
+                  <div className='col align-middle align-items-center'>
+                    <MonitorSelector />
+                  </div>
+              </span>
+
               <EventsList />
             </div>);
   }
