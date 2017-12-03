@@ -19,10 +19,6 @@ class EventsList extends React.Component {
       fsEffectiveEvents: []
     }
 
-    this.badgeStyle = {
-        float: 'right'
-    }
-
     this.styles = {
       badgeStyle : {
         float: 'right'
