@@ -7,7 +7,7 @@ import moment from 'moment';
 import styles from '../css/eventslist.css';
 
 // Use named export for unconnected component for jest
-//export
+// export
 class EventsList extends React.Component {
 
   constructor(props) {
@@ -24,6 +24,13 @@ class EventsList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
+
+    if( nextProps.activeSubscription ) {
+      this.setState({
+        fsEffectiveEvents: []
+      });
+    }
+
     if( nextProps.fsEvent ) {
 
       const fsEvent = nextProps.fsEvent;
@@ -44,14 +51,18 @@ class EventsList extends React.Component {
     e.preventDefault();
 
     let fromDate = day.clone(); //.unix();
-    console.log('FROM: ' + fromDate.format('LLLL'));
+    //console.log('FROM: ' + fromDate.format('LLLL'));
     let toDate = day.add(1, 'day');
-    console.log('TO: ' + toDate.format('LLLL'));
+    //console.log('TO: ' + toDate.format('LLLL'));
+
+    let self = this;
 
     const effectiveEvents = this.state.fsEvents.filter( (fsEvent) => {
       const _watched = moment.unix(parseInt(fsEvent.watched / 1000, 10)); // without mills
-      console.log(' Watched: ' + _watched.format('LLLL'));
-      return _watched > fromDate && _watched < toDate;
+      //console.log(' Watched: ' + _watched.format('LLLL'));
+      return fsEvent.subscription === self.props.activeSubscription
+              &&  _watched > fromDate
+              && _watched < toDate;
     });
 
     this.setState({
@@ -71,6 +82,11 @@ class EventsList extends React.Component {
       milliseconds: 0
     });
 
+    let isActiveSubscription = this.props.activeSubscription !== '';
+    if( !isActiveSubscription ) {
+      return null;
+    }
+
     let i = 1;
     dates.push(today.clone());
     while(i < 21) {
@@ -83,6 +99,7 @@ class EventsList extends React.Component {
     return(<div>
               <h1>Sanfona</h1>
               <h2>{this.props.activeFolder}</h2>
+
               <div id='accordion' role='tablist' aria-multiselectable='true'>
                   {dates.map( (day, index)  => {
                                                   return (<div className='card' key={index}>
