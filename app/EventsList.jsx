@@ -80,41 +80,44 @@ class EventsList extends React.Component {
     }
 
     return(<div>
-             <h1>Sanfona</h1>
-             <h2>{this.props.activeFolder}</h2>
-             <div id='accordion' role='tablist' aria-multiselectable='true'>
-                {dates.map( (day, index)  => {
-                    return (<div className='card' key={index}>
-                              <div className='card-header' role='tab' id={'heading'+index}
-                                  onClick={ (e) => this.handleHeaderClick(day, e)}>
-                                <h5 className='mb-0'>
-                                  <a data-toggle='collapse' data-parent='#accordion'
-                                    href={'#u' + index.toString()} aria-expanded='false'>
-                                      {day.format('DD.MM.YYYY')}
-                                      <span style={this.badgeStyle}
-                                            className="badge badge-primary">New
-                                      </span>
-                                  </a>
-                                </h5>
-                              </div>
+              <h1>Sanfona</h1>
+              <h2>{this.props.activeFolder}</h2>
+              <div id='accordion' role='tablist' aria-multiselectable='true'>
+                  {dates.map( (day, index)  => {
+                                                  return (<div className='card' key={index}>
+                                                            <div className='card-header' role='tab' id={'heading'+index}
+                                                                  onClick={ e => this.handleHeaderClick(day, e) }>
+                                                                  <h5 className='mb-0'>
+                                                                    <a data-toggle='collapse' data-parent='#accordion'
+                                                                      href={'#u' + index.toString()} aria-expanded='false'>
+                                                                        {day.format('DD.MM.YYYY')}
+                                                                        <span style={this.badgeStyle}
+                                                                              className="badge badge-primary">New
+                                                                        </span>
+                                                                    </a>
+                                                                  </h5>
+                                                            </div>
 
-                              <div id={'u' + index} className='collapse hide'
-                                    role='tabpanel'
-                                    aria-labelledby={'heading'+index}>
-                                <div className='card-block'>
-                                {this.state.fsEffectiveEvents.map( (item, i) => {
-                                  const _watched = moment.unix( parseInt(item.watched/1000) );
-                                  return(<div key={i} className='row'>
-                                            <div className='col'>{item.fileName}</div>
-                                            <div className='col'>{_watched.format('DD.MM.YYYY')}</div>
-                                        </div>)
-                                  })
-                                }
-                                </div>
-                              </div>
-                            </div>)
-                })}
-             </div>
+                                                            <div id={'u' + index} className='collapse hide'
+                                                                  role='tabpanel'
+                                                                  aria-labelledby={'heading'+index}>
+                                                                  <div className='card-block'>
+                                                                      {this.state.fsEffectiveEvents.map( (item, i) => {
+                                                                        const _watched = moment.unix( parseInt(item.watched/1000) );
+                                                                        return(<div key={i} className='row'>
+                                                                                  <div className='col'>{item.fileName}</div>
+                                                                                  <div className='col'>{_watched.format('DD.MM.YYYY')}</div>
+                                                                              </div>)
+                                                                        })
+                                                                      }
+                                                                  </div>
+                                                            </div>
+
+                                                          </div>
+                                                          )
+                                                })
+                  };
+              </div>
            </div>)
   }
 };
