@@ -50,7 +50,7 @@ class EventsList extends React.Component {
   handleHeaderClick = (day, e) => {
     e.preventDefault();
 
-    let fromDate = day.clone(); //.unix();
+    let fromDate = day.clone();
     //console.log('FROM: ' + fromDate.format('LLLL'));
     let toDate = day.add(1, 'day');
     //console.log('TO: ' + toDate.format('LLLL'));
@@ -68,6 +68,21 @@ class EventsList extends React.Component {
     this.setState({
       fsEffectiveEvents: effectiveEvents
     });
+  }
+
+  countEvents = (day) => {
+
+    let fromDate = day.clone();
+    let toDate = day.clone().add(1, 'day');
+    let self = this;
+
+    let _dayEvents = this.state.fsEvents.filter( (fsEvent) => {
+      const _watched = moment.unix(parseInt(fsEvent.watched / 1000, 10)); // without mills
+      return fsEvent.subscription === self.props.activeSubscription
+              &&  _watched > fromDate
+              && _watched < toDate;
+    });
+    return _dayEvents.length;// day.format('LLLL');
   }
 
   render() {
@@ -110,7 +125,7 @@ class EventsList extends React.Component {
                                                                       href={'#u' + index.toString()} aria-expanded='false'>
                                                                         {day.format('DD.MM.YYYY')}
                                                                         <span style={this.badgeStyle}
-                                                                              className="badge badge-primary">New
+                                                                              className="badge badge-primary">{this.countEvents(day)}
                                                                         </span>
                                                                     </a>
                                                                   </h5>
