@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 
 import moment from 'moment';
+import classNames from 'classnames';
 
 import styles from '../css/eventslist.css';
 
@@ -82,7 +83,7 @@ class EventsList extends React.Component {
               &&  _watched > fromDate
               && _watched < toDate;
     });
-    return _dayEvents.length;// day.format('LLLL');
+    return _dayEvents.length;
   }
 
   render() {
@@ -117,6 +118,11 @@ class EventsList extends React.Component {
 
               <div id='accordion' role='tablist' aria-multiselectable='true'>
                   {dates.map( (day, index)  => {
+                                                  let eventCount = this.countEvents(day);
+                                                  let badgeClass = classNames('badge', {
+                                                    'badge-primary': eventCount > 0,
+                                                    'badge-danger': eventCount == 0
+                                                  });
                                                   return (<div className='card' key={index}>
                                                             <div className='card-header' role='tab' id={'heading'+index}
                                                                   onClick={ e => this.handleHeaderClick(day, e) }>
@@ -125,7 +131,7 @@ class EventsList extends React.Component {
                                                                       href={'#u' + index.toString()} aria-expanded='false'>
                                                                         {day.format('DD.MM.YYYY')}
                                                                         <span style={this.badgeStyle}
-                                                                              className="badge badge-primary">{this.countEvents(day)}
+                                                                              className={badgeClass}>{this.countEvents(day)}
                                                                         </span>
                                                                     </a>
                                                                   </h5>
@@ -137,9 +143,10 @@ class EventsList extends React.Component {
                                                                   <div className='card-block'>
                                                                       {this.state.fsEffectiveEvents.map( (item, i) => {
                                                                         const _watched = moment.unix( parseInt(item.watched/1000) );
+                                                                        var filename = item.fileName.replace(/^.*[\\\/]/, '')
                                                                         return(<div key={i} className='row'>
-                                                                                  <div className='col'>{item.fileName}</div>
-                                                                                  <div className='col'>{_watched.format('DD.MM.YYYY')}</div>
+                                                                                  <div className='col'>{filename}</div>
+                                                                                  <div className='col'>seen at {_watched.format('hh:mm:ss')}</div>
                                                                               </div>)
                                                                         })
                                                                       }
