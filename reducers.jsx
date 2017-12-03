@@ -3,6 +3,7 @@ import _ from 'lodash';
 const INITIAL_STATE = {
   monitors: [],
   activeSubscription: '',
+  activeFolder: '',
   lastSubscription: '',
   lastSubscriptionTime: 0,
   fsEvent: {},
@@ -19,7 +20,9 @@ const reducers = (state = INITIAL_STATE, action) => {
       };
 
     case 'ACTIVE_MONITOR': {
-      return _.assign({}, state, {activeSubscription: action.data});
+      return _.assign({}, state, {
+                                  activeSubscription: action.data.subscriptionName,
+                                  activeFolder: action.data.folderName});
     }
 
     case 'SUBSCRIPTION_MET': {
