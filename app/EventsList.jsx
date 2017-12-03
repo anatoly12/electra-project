@@ -22,6 +22,15 @@ class EventsList extends React.Component {
     this.badgeStyle = {
         float: 'right'
     }
+
+    this.styles = {
+      badgeStyle : {
+        float: 'right'
+      },
+      fileNameStyle : {
+        textAlign: 'center'
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps){
@@ -86,6 +95,21 @@ class EventsList extends React.Component {
     return _dayEvents.length;
   }
 
+  renderEffectiveEvents = () => {
+
+    return this.state.fsEffectiveEvents.map( (item, i) => {
+
+      let _watched = moment.unix( parseInt(item.watched/1000) );
+      let filename = item.fileName.replace(/^.*[\\\/]/, '')
+
+      return(<div key={i} className='row justify-content-md-center'>
+              <div style={this.styles.fileNameStyle} className='col'>{filename}</div>
+              <div className='col'>seen at {_watched.format('hh:mm:ss')}</div>
+          </div>)
+    })
+
+  }
+
   render() {
 
     const self = this;
@@ -113,13 +137,13 @@ class EventsList extends React.Component {
     }
 
     return(<div>
-              <h1>Sanfona</h1>
+              <h1>Folder monitored:</h1>
               <h2>{this.props.activeFolder}</h2>
 
               <div id='accordion' role='tablist' aria-multiselectable='true'>
                   {dates.map( (day, index)  => {
                                                   let eventCount = this.countEvents(day);
-                                                  let badgeClass = classNames('badge', {
+                                                  let badgeClass = classNames('badge-pill', {
                                                     'badge-primary': eventCount > 0,
                                                     'badge-danger': eventCount == 0
                                                   });
@@ -130,7 +154,7 @@ class EventsList extends React.Component {
                                                                     <a data-toggle='collapse' data-parent='#accordion'
                                                                       href={'#u' + index.toString()} aria-expanded='false'>
                                                                         {day.format('DD.MM.YYYY')}
-                                                                        <span style={this.badgeStyle}
+                                                                        <span style={this.styles.badgeStyle}
                                                                               className={badgeClass}>{this.countEvents(day)}
                                                                         </span>
                                                                     </a>
@@ -141,15 +165,7 @@ class EventsList extends React.Component {
                                                                   role='tabpanel'
                                                                   aria-labelledby={'heading'+index}>
                                                                   <div className='card-block'>
-                                                                      {this.state.fsEffectiveEvents.map( (item, i) => {
-                                                                        const _watched = moment.unix( parseInt(item.watched/1000) );
-                                                                        var filename = item.fileName.replace(/^.*[\\\/]/, '')
-                                                                        return(<div key={i} className='row'>
-                                                                                  <div className='col'>{filename}</div>
-                                                                                  <div className='col'>seen at {_watched.format('hh:mm:ss')}</div>
-                                                                              </div>)
-                                                                        })
-                                                                      }
+                                                                      {this.renderEffectiveEvents()}
                                                                   </div>
                                                             </div>
 
