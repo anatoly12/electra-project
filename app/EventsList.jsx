@@ -44,13 +44,13 @@ class EventsList extends React.Component {
     e.preventDefault();
 
     let fromDate = day.clone(); //.unix();
-    //console.log('FROM: ' + fromDate.format('LLLL'));
+    console.log('FROM: ' + fromDate.format('LLLL'));
     let toDate = day.add(1, 'day');
-    //console.log('TO: ' + toDate.format('LLLL'));
+    console.log('TO: ' + toDate.format('LLLL'));
 
     const effectiveEvents = this.state.fsEvents.filter( (fsEvent) => {
       const _watched = moment.unix(parseInt(fsEvent.watched / 1000, 10)); // without mills
-      //console.log(' Watched: ' + _watched.format('LLLL'));
+      console.log(' Watched: ' + _watched.format('LLLL'));
       return _watched > fromDate && _watched < toDate;
     });
 
@@ -72,6 +72,7 @@ class EventsList extends React.Component {
     });
 
     let i = 1;
+    dates.push(today.clone());
     while(i < 21) {
       let day = today.add(-1, 'day');
       dates.push(day.clone());  // add is a mutator method,
