@@ -137,7 +137,7 @@ class EventsList extends React.Component {
     }
 
     return(<div>
-              <h1>Folder monitored:</h1>
+              <h2>Folder monitored:</h2>
               <h2>{this.props.activeFolder}</h2>
 
               <div id='accordion' role='tablist' aria-multiselectable='true'>
