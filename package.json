@@ -8,15 +8,6 @@
     "react",
     "firebase"
   ],
-  "homepage": "https://github.com/olegkleiman/electra",
-  "author": "Oleg Kleiman <oleg_kleiman@hotmail.com>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/olegkleiman/electra.git"
-  },
-  "bugs": {
-    "url": "https://github.com/olegkleiman/electra/issues"
-  },
   "license": "ISC",
   "main": "hook.js",
   "jest": {
