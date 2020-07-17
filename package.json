@@ -49,7 +49,7 @@
     "concurrently": "^3.5.0",
     "css-loader": "^0.28.7",
     "devtron": "^1.4.0",
-    "electron": "^1.7.9",
+    "electron": "^9.1.0",
     "electron-debug": "^1.4.0",
     "electron-devtools-installer": "^2.2.1",
     "electron-packager": "^9.1.0",
